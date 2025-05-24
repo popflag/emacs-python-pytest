@@ -465,9 +465,10 @@ TestClassParent::TestClassChild::test_my_function."
          'python-pdbtrack-comint-output-filter-function
          nil t))
       (run-hooks 'python-pytest-setup-hook)
-      (if (eq system-type 'windows-nt)
-          (make-comint-in-buffer "pytest" buffer "powershell" nil "-Command" command)
-        (make-comint-in-buffer "pytest" buffer "sh" nil "-c" command))
+      (make-comint-in-buffer
+       "pytest" buffer
+       (if (eq system-type 'windows-nt) "powershell" "sh")
+       nil command)
       (run-hooks 'python-pytest-started-hook)
       (setq process (get-buffer-process buffer))
       (set-process-sentinel process #'python-pytest--process-sentinel))))
